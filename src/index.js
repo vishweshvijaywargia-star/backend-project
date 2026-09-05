@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import connectDB from "./db/index.js";
 import app from "./app.js";
 
@@ -6,15 +6,12 @@ import dns from "dns";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
-dotenv.config({
-    path : './.env'
-});
 
 connectDB();
 
-// app.get("/", (req, res) => {
-//     res.send("API is running...");
-// });
+app.get("/", (req, res) => {
+    res.send("API is running...");
+});
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
