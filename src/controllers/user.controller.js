@@ -340,9 +340,11 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
                 subscriberCount: { $size: "$subscribers" },
                 subscribedToCount: { $size: "$subscribedTo" },
                 isSubscribed: {
-                    if: {$in: [req.user?._id, "$subscribers.subscriber"]},
-                    then: true,
-                    else: false
+                    $cond: {
+                        if: {$in: [req.user?._id, "$subscribers.subscriber"]},
+                        then: true,
+                        else: false
+                    }
                 }
             }
         }, 
@@ -365,5 +367,6 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new ApiResponse(200, user[0], "Channel profile fetched successfully"));
 })
+
 
 export { registerUser, loginUser, logoutUser, refreshToken, changeCurrentUserPassword, getCurrentUser, updateCurrentUser, updateAvatar, updateCoverImage, getUserChannelProfile };
